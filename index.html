@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="./css/style.min.css" />
+    <script defer async src="./js/main.js"></script>
+  </head>
+  <body>
+    <header class="header">
+      <div class="container">
+        <div class="header__wrapper">
+          <img class="header__img" src="./images/monster.png" alt="" />
+          <select name="themes" class="header__themes">
+            <option value="dark">Dark theme</option>
+            <option value="light">Light theme</option>
+          </select>
+        </div>
+      </div>
+    </header>
+    <main>
+      <section class="todo">
+        <div class="container">
+          <h1 class="todo__title">Todo List</h1>
+          <form class="todo__form" action="">
+            <h2 class="todo__form-title">Add new task</h2>
+            <div class="todo__form-group">
+              <input
+                type="text"
+                name="taskTitle"
+                class="todo__form-input"
+                placeholder="Task Title"
+                data-message="Title must be at list 3 characters"
+              />
+              <span class="todo__form-error"></span>
+            </div>
+            <textarea
+              placeholder="Task Text"
+              class="todo__form-input todo__form-input--textarea"
+              name="taskText"
+            ></textarea>
+            <div class="todo__form-footer">
+              <button class="btn">Add task</button>
+            </div>
+          </form>
+            <select name="sort" class="todo__sort">
+              <option value="fromNew">From new to new</option>
+              <option value="fromOld">From old to old</option>
+            </select>
+          <div class="todo__wrapper"></div>
+        </div>
+      </section>
+    </main>
+    <div class="overlay">
+      <div class="modal">
+        <p class="modal__text">
+          Are you sure you want to delete <span></span> ?
+        </p>
+        <div class="modal__footer">
+          <button class="btn btn--red btn--delete-js">Delete Task</button>
+          <button class="btn btn--cancel-js">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
