@@ -40,14 +40,14 @@ const tasks = [
 /* const taskIndex = tasks.findIndex((task) => task.id === "task-45299838");
 tasks.splice(taskIndex, 1); */
 
-function x(tasksArray) {
+function createTaskObjectById(tasksArray) {
   return tasksArray.reduce((acc, el) => {
     acc[el.id] = el;
     return acc;
   }, {});
 }
 
-const tasksObj = x(tasks);
+const tasksObj = createTaskObjectById(tasks);
 
 if (!localStorage.getItem("tasks")) {
   updateTasksInLS(tasksObj);
@@ -237,7 +237,7 @@ function onSortTasks(e) {
   } else {
     tasksArray.sort((a, b) => new Date(b.date) - new Date(a.date));
   }
-  const tasksObj = x(tasksArray);
+  const tasksObj = createTaskObjectById(tasksArray);
   renderAllTasks(tasksObj);
   updateTasksInLS(tasksObj);
   localStorage.setItem("sortBy", e.target.value);
