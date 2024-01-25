@@ -40,10 +40,14 @@ const tasks = [
 /* const taskIndex = tasks.findIndex((task) => task.id === "task-45299838");
 tasks.splice(taskIndex, 1); */
 
-const tasksObj = tasks.reduce((acc, el) => {
-  acc[el.id] = el;
-  return acc;
-}, {});
+function x(tasksArray) {
+  return tasksArray.reduce((acc, el) => {
+    acc[el.id] = el;
+    return acc;
+  }, {});
+}
+
+const tasksObj = x(tasks);
 
 if (!localStorage.getItem("tasks")) {
   updateTasksInLS(tasksObj);
@@ -74,6 +78,7 @@ const todoSort = getElement(".todo__sort");
 // Variables
 const themeFromLS = localStorage.getItem("theme");
 const tasksFromLS = JSON.parse(localStorage.getItem("tasks"));
+const sortText = localStorage.getItem("sortBy")
 
 // Events
 
@@ -85,10 +90,11 @@ todoForm.addEventListener("submit", onAddTask);
 
 themeSelect.addEventListener("change", onChangeTheme);
 
-todoSort.addEventListener("change", onSelectTask);
+todoSort.addEventListener("change", onSortTasks);
 
 setTheme(themeFromLS);
 themeSelect.value = themeFromLS || "dark";
+todoSort.value = sortText || 'fromNew';
 
 // Functions
 
@@ -96,9 +102,9 @@ function getElement(selector) {
   return document.querySelector(selector);
 }
 
-function createTaskTemplate({ title, text, id }) {
+function createTaskTemplate({ title, text, id }, className = "") {
   return `
-    <div class="todo__item" data-id='${id}'>
+    <div class="todo__item ${className}" data-id='${id}'>
       <h3 class="todo__item-title">${title}</h3>
       <p class="todo__item-text">${text}</p>
       <div class="todo__item-footer">
@@ -115,16 +121,17 @@ function renderAllTasks(tasks) {
     .reduce((acc, task) => (acc += createTaskTemplate(task)), "");
   //fragment = fragment.split("<span></span>").reverse().join("");
   // todoWrapper.insertAdjacentHTML("beforeend", fragment);
-  todoWrapper.innerHTML = fragment
+  todoWrapper.innerHTML = fragment;
 
   setTimeout(() => {
-    todoWrapper.querySelectorAll(".todo__item").forEach(item => item.classList.add("visible"));
+    todoWrapper
+      .querySelectorAll(".todo__item")
+      .forEach((item) => item.classList.add("visible"));
   }, 1);
-  
 }
 
 function renderSingleTask(task) {
-  const taskTemplate = createTaskTemplate(task);
+  const taskTemplate = createTaskTemplate(task, "visible");
   todoWrapper.insertAdjacentHTML("afterbegin", taskTemplate);
 }
 
@@ -223,15 +230,15 @@ function setTheme(theme) {
   }
 }
 
-function onSelectTask(e) {
+function onSortTasks(e) {
   const tasksArray = Object.values(tasksFromLS);
-  if (e.target.value === 'fromNew') {
+  if (e.target.value === "fromNew") {
     tasksArray.sort((a, b) => new Date(a.date) - new Date(b.date));
-    renderAllTasks(tasksArray)
-  }else{
+  } else {
     tasksArray.sort((a, b) => new Date(b.date) - new Date(a.date));
-    renderAllTasks(tasksArray)
-    
   }
+  const tasksObj = x(tasksArray);
+  renderAllTasks(tasksObj);
+  updateTasksInLS(tasksObj);
+  localStorage.setItem("sortBy", e.target.value);
 }
-
